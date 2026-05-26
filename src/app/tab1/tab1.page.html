@@ -1,12 +1,117 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar>
-    <ion-title>Bienvenida</ion-title>
+    <ion-title>
+      <span class="text-gradient">Nexura</span> Dashboard
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="primary">
+        <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <div class="welcome-container">
-    <h1>¡Hola, bienvendo!</h1>
-    <p>Registro de personas.</p>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense" class="ion-no-border">
+    <ion-toolbar>
+      <ion-title size="large"><span class="text-gradient">Nexura</span></ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="dashboard-container">
+    
+    <ion-card class="balance-card">
+      <ion-card-content>
+        <p class="balance-label">Balance Total</p>
+        <h1 class="balance-amount">$1,245.50</h1>
+        
+        <div class="stats-row">
+          <div class="stat-item income">
+            <ion-icon name="arrow-up-circle-outline"></ion-icon>
+            <div>
+              <small>Ingresos</small>
+              <p>+$3,400.00</p>
+            </div>
+          </div>
+          <div class="stat-item expense">
+            <ion-icon name="arrow-down-circle-outline"></ion-icon>
+            <div>
+              <small>Gastos</small>
+              <p>-$2,154.50</p>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="quick-actions">
+      <ion-button fill="clear" class="action-btn">
+        <div class="action-icon-wrapper src-income">
+          <ion-icon name="add-outline"></ion-icon>
+        </div>
+        <ion-label>Ingreso</ion-label>
+      </ion-button>
+      
+      <ion-button fill="clear" class="action-btn">
+        <div class="action-icon-wrapper src-expense">
+          <ion-icon name="remove-outline"></ion-icon>
+        </div>
+        <ion-label>Gasto</ion-label>
+      </ion-button>
+
+      <ion-button fill="clear" class="action-btn">
+        <div class="action-icon-wrapper src-analytics">
+          <ion-icon name="pie-chart-outline"></ion-icon>
+        </div>
+        <ion-label>Analítica</ion-label>
+      </ion-button>
+    </div>
+
+    <div class="section-header">
+      <h2>Actividad Reciente</h2>
+      <ion-note color="primary">Ver todo</ion-note>
+    </div>
+
+    <ion-list lines="none" class="transparent-list">
+      <ion-item class="custom-item">
+        <div class="item-icon-box expense-icon" slot="start">
+          <ion-icon name="fast-food-outline"></ion-icon>
+        </div>
+        <ion-label>
+          <h3>Restaurante Tokyo</h3>
+          <p>Comida & Bebida</p>
+        </ion-label>
+        <slot slot="end">
+          <span class="amount expense-text">-$42.00</span>
+        </slot>
+      </ion-item>
+
+      <ion-item class="custom-item">
+        <div class="item-icon-box income-icon" slot="start" style="display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+          💼
+        </div>
+        <ion-label>
+          <h3>Freelance Dev</h3>
+          <p>Sueldo / Honorarios</p>
+        </ion-label>
+        <slot slot="end">
+          <span class="amount income-text">+$850.00</span>
+        </slot>
+      </ion-item>
+
+      <ion-item class="custom-item">
+        <div class="item-icon-box cloud-icon" slot="start" style="display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
+          ☁️
+        </div>
+        <ion-label>
+          <h3>Supabase Cloud</h3>
+          <p>Infraestructura</p>
+        </ion-label>
+        <slot slot="end">
+          <span class="amount expense-text">-$25.00</span>
+        </slot>
+      </ion-item>
+    </ion-list>
+
   </div>
 </ion-content>

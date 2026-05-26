@@ -1,33 +1,183 @@
-// Contenedor principal con degradado radial profundo (Estética Tokyo Night)
-ion-content {
-  --background: radial-gradient(circle at top, #1e1b4b 0%, #020617 70%);
-  --color: #f8fafc;
+// Contenedor principal para control de paddings
+.dashboard-container {
+  padding: 16px;
 }
 
-.welcome-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 80vh;
-  text-align: center;
-  padding: 0 20px;
+// Toolbar y Títulos
+ion-toolbar {
+  --background: #1a1b26;
+  --border-color: transparent;
+}
 
-  h1 {
-    font-size: 2.8rem;
-    font-weight: 800;
-    letter-spacing: -1px;
-    margin-bottom: 12px;
-    // Efecto de texto degradado brillante
-    background: linear-gradient(135deg, #7dd3fc 0%, #c084fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.text-gradient {
+  background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+// Tarjeta de Balance
+.balance-card {
+  margin: 0 0 24px 0;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #24283b, #1f2335);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(122, 162, 247, 0.1); // Sutil borde azul
+
+  .balance-label {
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  .balance-amount {
+    color: #c0caf5;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin: 8px 0 20px 0;
+    letter-spacing: -0.5px;
+  }
+}
+
+// Fila de Estadísticas (Ingresos/Gastos)
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(86, 95, 137, 0.2);
+  padding-top: 16px;
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    ion-icon {
+      font-size: 1.8rem;
+    }
+
+    small {
+      color: var(--ion-color-medium);
+      display: block;
+    }
+
+    p {
+      margin: 0;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    &.income {
+      ion-icon { color: var(--ion-color-success); }
+      p { color: var(--ion-color-success); }
+    }
+
+    &.expense {
+      ion-icon { color: var(--ion-color-danger); }
+      p { color: var(--ion-color-danger); }
+    }
+  }
+}
+
+// Acciones Rápidas
+.quick-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 28px;
+
+  .action-btn {
+    --padding-top: 0;
+    --padding-bottom: 0;
+    height: auto;
+    
+    ion-label {
+      font-size: 0.85rem;
+      color: #a9b1d6;
+      font-weight: 500;
+      margin-top: 8px;
+    }
+  }
+
+  .action-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    font-size: 1.5rem;
+
+    &.src-income {
+      background: rgba(158, 206, 106, 0.1);
+      color: var(--ion-color-success);
+    }
+    &.src-expense {
+      background: rgba(247, 118, 142, 0.1);
+      color: var(--ion-color-danger);
+    }
+    &.src-analytics {
+      background: rgba(187, 154, 243, 0.1);
+      color: var(--ion-color-secondary);
+    }
+  }
+}
+
+// Sección de Actividad
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #c0caf5;
+    margin: 0;
+  }
+}
+
+.transparent-list {
+  background: transparent;
+  padding: 0;
+}
+
+.custom-item {
+  --background: #24283b;
+  --border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  h3 {
+    color: #c0caf5;
+    font-weight: 500;
+    font-size: 0.95rem;
   }
 
   p {
-    font-size: 1.1rem;
-    color: #94a3b8;
-    max-width: 280px;
-    line-height: 1.5;
+    color: var(--ion-color-medium);
+    font-size: 0.8rem;
   }
 }
+
+// Iconos de la lista
+.item-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+
+  &.expense-icon { background: rgba(247, 118, 142, 0.15); color: var(--ion-color-danger); }
+  &.income-icon { background: rgba(158, 206, 106, 0.15); color: var(--ion-color-success); }
+  &.cloud-icon { background: rgba(122, 162, 247, 0.15); color: var(--ion-color-primary); }
+}
+
+.amount {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.expense-text { color: var(--ion-color-danger); }
+.income-text { color: var(--ion-color-success); }

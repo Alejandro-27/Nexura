@@ -1,2 +1,27 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+body {
+  /* Tokyo Night Dark Palette */
+  --ion-background-color: #1a1b26;
+  --ion-background-color-rgb: 26,27,38;
+
+  --ion-text-color: #a9b1d6;
+  --ion-text-color-rgb: 169,177,214;
+
+  /* Card / Surface background */
+  --tokyo-surface: #24283b;
+  --tokyo-surface-tabs: #1f2335;
+
+  /* Accent Colors */
+  --ion-color-primary: #7aa2f7; /* Azul Neón */
+  --ion-color-secondary: #bb9af3; /* Morado / Magenta */
+  --ion-color-tertiary: #b4f9f8; /* Cyan */
+  --ion-color-success: #9ece6a; /* Verde ingresos */
+  --ion-color-danger: #f7768e; /* Rojo / Rosa gastos */
+  --ion-color-warning: #e0af68; /* Naranja alertas */
+  --ion-color-medium: #565f89; /* Texto secundario / Muted */
+}
+
+/* Ajuste fino para las tarjetas de Ionic */
+ion-card {
+  --background: var(--tokyo-surface);
+  color: var(--ion-text-color);
+}
