@@ -1,0 +1,7 @@
+{
+  "name": "Formilario",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

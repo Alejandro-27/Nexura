@@ -1,0 +1,43 @@
+// Fondo oscuro e industrial
+ion-content {
+  --background: #020617;
+  padding-top: 20px;
+}
+
+// Estilizar los contenedores de los campos
+ion-item {
+  --background: #0f172a;
+  --border-radius: 12px;
+  --border-color: #334155;
+  --border-style: solid;
+  --border-width: 1px;
+  --highlight-color-focused: #7dd3fc; // Línea brillante al hacer tap
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+
+  // Estilos específicos para el texto del input
+  ion-input {
+    --color: #f1f5f9;
+    --placeholder-color: #64748b;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+// Botón de acción con estilo "Glow" e isla flotante
+ion-button {
+  --background: linear-gradient(90deg, #7dd3fc 0%, #a855f7 100%);
+  --background-hover: linear-gradient(90deg, #38bdf8 0%, #9333ea 100%);
+  --color: #020617;
+  --border-radius: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-top: 30px;
+  height: 52px;
+  transition: transform 0.2s ease;
+  box-shadow: 0 0 20px rgba(125, 211, 252, 0.3);
+
+  &:active {
+    transform: scale(0.98); // Efecto sutil de presión al pulsar
+  }
+}

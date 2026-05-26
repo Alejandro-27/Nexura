@@ -1,0 +1,33 @@
+// Contenedor principal con degradado radial profundo (Estética Tokyo Night)
+ion-content {
+  --background: radial-gradient(circle at top, #1e1b4b 0%, #020617 70%);
+  --color: #f8fafc;
+}
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  text-align: center;
+  padding: 0 20px;
+
+  h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+    // Efecto de texto degradado brillante
+    background: linear-gradient(135deg, #7dd3fc 0%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: #94a3b8;
+    max-width: 280px;
+    line-height: 1.5;
+  }
+}
