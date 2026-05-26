@@ -23,21 +23,21 @@
     <ion-card class="balance-card">
       <ion-card-content>
         <p class="balance-label">Balance Total</p>
-        <h1 class="balance-amount">$1,245.50</h1>
+        <h1 class="balance-amount">${{ balanceTotal | number:'1.2-2' }}</h1>
         
         <div class="stats-row">
           <div class="stat-item income">
             <ion-icon name="arrow-up-circle-outline"></ion-icon>
             <div>
               <small>Ingresos</small>
-              <p>+$3,400.00</p>
+              <p>+${{ totalIngresos | number:'1.2-2' }}</p>
             </div>
           </div>
           <div class="stat-item expense">
             <ion-icon name="arrow-down-circle-outline"></ion-icon>
             <div>
               <small>Gastos</small>
-              <p>-$2,154.50</p>
+              <p>-${{ totalGastos | number:'1.2-2' }}</p>
             </div>
           </div>
         </div>
@@ -45,14 +45,14 @@
     </ion-card>
 
     <div class="quick-actions">
-      <ion-button fill="clear" class="action-btn">
+      <ion-button fill="clear" class="action-btn" (click)="abrirModalNuevaTransaccion('ingreso')">
         <div class="action-icon-wrapper src-income">
           <ion-icon name="add-outline"></ion-icon>
         </div>
         <ion-label>Ingreso</ion-label>
       </ion-button>
       
-      <ion-button fill="clear" class="action-btn">
+      <ion-button fill="clear" class="action-btn" (click)="abrirModalNuevaTransaccion('gasto')">
         <div class="action-icon-wrapper src-expense">
           <ion-icon name="remove-outline"></ion-icon>
         </div>
@@ -72,46 +72,71 @@
       <ion-note color="primary">Ver todo</ion-note>
     </div>
 
-    <ion-list lines="none" class="transparent-list">
-      <ion-item class="custom-item">
-        <div class="item-icon-box expense-icon" slot="start">
-          <ion-icon name="fast-food-outline"></ion-icon>
-        </div>
-        <ion-label>
-          <h3>Restaurante Tokyo</h3>
-          <p>Comida & Bebida</p>
-        </ion-label>
-        <slot slot="end">
-          <span class="amount expense-text">-$42.00</span>
-        </slot>
-      </ion-item>
+    <div *ngIf="cargando" class="ion-text-center ion-padding" style="margin-top: 20px;">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+      <p style="color: var(--ion-color-medium); font-size: 0.9rem; margin-top: 8px;">
+        Buscando transacciones...
+      </p>
+    </div>
 
-      <ion-item class="custom-item">
-        <div class="item-icon-box income-icon" slot="start" style="display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-          💼
-        </div>
-        <ion-label>
-          <h3>Freelance Dev</h3>
-          <p>Sueldo / Honorarios</p>
-        </ion-label>
-        <slot slot="end">
-          <span class="amount income-text">+$850.00</span>
-        </slot>
-      </ion-item>
+    <div *ngIf="!cargando && listaTransacciones.length === 0" class="ion-text-center ion-padding" style="opacity: 0.5; margin-top: 30px;">
+      <p style="font-size: 0.95rem;">No hay transacciones registradas todavía.</p>
+    </div>
 
-      <ion-item class="custom-item">
-        <div class="item-icon-box cloud-icon" slot="start" style="display: flex; align-items: center; justify-content: center; font-size: 1.2rem;">
-          ☁️
+    <ion-list *ngIf="!cargando && listaTransacciones.length > 0" lines="none" class="transparent-list">
+      <ion-item class="custom-item" *ngFor="let transaccion of listaTransacciones">
+        <div class="item-icon-box" [ngClass]="transaccion.tipo === 'ingreso' ? 'income-icon' : 'expense-icon'" slot="start">
+          <ion-icon [name]="transaccion.tipo === 'ingreso' ? 'arrow-up-circle-outline' : 'fast-food-outline'"></ion-icon>
         </div>
         <ion-label>
-          <h3>Supabase Cloud</h3>
-          <p>Infraestructura</p>
+          <h3>{{ transaccion.descripcion }}</h3>
+          <p>{{ transaccion.fecha | date:'dd/MM/yyyy' }}</p>
         </ion-label>
         <slot slot="end">
-          <span class="amount expense-text">-$25.00</span>
+          <span class="amount" [ngClass]="transaccion.tipo === 'ingreso' ? 'income-text' : 'expense-text'">
+            {{ transaccion.tipo === 'ingreso' ? '+' : '-' }}${{ transaccion.monto }}
+          </span>
         </slot>
       </ion-item>
     </ion-list>
 
   </div>
+
+  <ion-modal [isOpen]="mostrarModal" (didDismiss)="cerrarModal()" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.75]">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar>
+          <ion-title>Nueva Transacción</ion-title>
+          <ion-buttons slot="end">
+            <ion-button color="medium" (click)="cerrarModal()">Cancelar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      
+      <ion-content class="ion-padding">
+        <div style="display: flex; flex-direction: column; gap: 15px;">
+          
+          <ion-item lines="none" style="--background: var(--ion-color-light); border-radius: 12px;">
+            <ion-select label="Tipo" justify="space-between" [(ngModel)]="nuevaTransaccion.tipo">
+              <ion-select-option value="ingreso">🟢 Ingreso</ion-select-option>
+              <ion-select-option value="gasto">🔴 Gasto</ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item lines="none" style="--background: var(--ion-color-light); border-radius: 12px;">
+            <ion-input label="Monto ($)" type="number" placeholder="0.00" justify="space-between" [(ngModel)]="nuevaTransaccion.monto"></ion-input>
+          </ion-item>
+
+          <ion-item lines="none" style="--background: var(--ion-color-light); border-radius: 12px;">
+            <ion-input label="Descripción" type="text" placeholder="Ej: Pago de Hosting" justify="space-between" [(ngModel)]="nuevaTransaccion.descripcion"></ion-input>
+          </ion-item>
+
+          <ion-button expand="block" shape="round" style="margin-top: 15px; font-weight: bold;" (click)="guardarTransaccion()">
+            Guardar Registro
+          </ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>
