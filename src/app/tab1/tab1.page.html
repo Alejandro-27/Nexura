@@ -1,142 +1,136 @@
-<ion-header [translucent]="true" class="ion-no-border">
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      <span class="text-gradient">Nexura</span> Dashboard
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button color="primary">
-        <ion-icon slot="icon-only" name="notifications-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-title>Nexura</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense" class="ion-no-border">
-    <ion-toolbar>
-      <ion-title size="large"><span class="text-gradient">Nexura</span></ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div *ngIf="cargando && listaTransacciones.length === 0" class="ion-text-center ion-padding">
+    <ion-spinner name="cils"></ion-spinner>
+    <p>Actualizando finanzas...</p>
+  </div>
 
-  <div class="dashboard-container">
-    
+  <ng-container *ngIf="!cargando || listaTransacciones.length > 0">
     <ion-card class="balance-card">
-      <ion-card-content>
-        <p class="balance-label">Balance Total</p>
-        <h1 class="balance-amount">${{ balanceTotal | number:'1.2-2' }}</h1>
-        
-        <div class="stats-row">
-          <div class="stat-item income">
-            <ion-icon name="arrow-up-circle-outline"></ion-icon>
-            <div>
-              <small>Ingresos</small>
-              <p>+${{ totalIngresos | number:'1.2-2' }}</p>
-            </div>
-          </div>
-          <div class="stat-item expense">
-            <ion-icon name="arrow-down-circle-outline"></ion-icon>
-            <div>
-              <small>Gastos</small>
-              <p>-${{ totalGastos | number:'1.2-2' }}</p>
-            </div>
-          </div>
-        </div>
+      <ion-card-content class="ion-text-center">
+        <ion-note>Balance Total</ion-note>
+        <h1 [ngClass]="{'positivo': balanceTotal >= 0, 'negativo': balanceTotal < 0}">
+          {{ balanceTotal | currency:'USD':'symbol':'1.0-2' }}
+        </h1>
       </ion-card-content>
     </ion-card>
 
-    <div class="quick-actions">
-      <ion-button fill="clear" class="action-btn" (click)="abrirModalNuevaTransaccion('ingreso')">
-        <div class="action-icon-wrapper src-income">
-          <ion-icon name="add-outline"></ion-icon>
-        </div>
-        <ion-label>Ingreso</ion-label>
+    <div class="ion-padding-horizontal">
+      <div style="display: flex; gap: 10px;">
+        <ion-card style="flex: 1; margin: 0;" class="ingreso-card">
+          <ion-card-content>
+            <ion-note>Ingresos</ion-note>
+            <h3 class="positivo">+{{ totalIngresos | currency:'USD':'symbol':'1.0-2' }}</h3>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card style="flex: 1; margin: 0;" class="gasto-card">
+          <ion-card-content>
+            <ion-note>Gastos</ion-note>
+            <h3 class="negativo">-{{ totalGastos | currency:'USD':'symbol':'1.0-2' }}</h3>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <div class="ion-padding flex-actions" style="display: flex; gap: 10px;">
+      <ion-button expand="block" color="success" style="flex: 1;" (click)="abrirModalNuevaTransaccion('ingreso')">
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        Ingreso
       </ion-button>
-      
-      <ion-button fill="clear" class="action-btn" (click)="abrirModalNuevaTransaccion('gasto')">
-        <div class="action-icon-wrapper src-expense">
-          <ion-icon name="remove-outline"></ion-icon>
-        </div>
-        <ion-label>Gasto</ion-label>
-      </ion-button>
-
-      <ion-button fill="clear" class="action-btn">
-        <div class="action-icon-wrapper src-analytics">
-          <ion-icon name="pie-chart-outline"></ion-icon>
-        </div>
-        <ion-label>Analítica</ion-label>
+      <ion-button expand="block" color="danger" style="flex: 1;" (click)="abrirModalNuevaTransaccion('gasto')">
+        <ion-icon slot="start" name="remove-circle-outline"></ion-icon>
+        Gasto
       </ion-button>
     </div>
 
-    <div class="section-header">
-      <h2>Actividad Reciente</h2>
-      <ion-note color="primary">Ver todo</ion-note>
+    <div class="ion-padding-horizontal">
+      <ion-label><h3>Historial Reciente</h3></ion-label>
     </div>
 
-    <div *ngIf="cargando" class="ion-text-center ion-padding" style="margin-top: 20px;">
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
-      <p style="color: var(--ion-color-medium); font-size: 0.9rem; margin-top: 8px;">
-        Buscando transacciones...
-      </p>
-    </div>
-
-    <div *ngIf="!cargando && listaTransacciones.length === 0" class="ion-text-center ion-padding" style="opacity: 0.5; margin-top: 30px;">
-      <p style="font-size: 0.95rem;">No hay transacciones registradas todavía.</p>
-    </div>
-
-    <ion-list *ngIf="!cargando && listaTransacciones.length > 0" lines="none" class="transparent-list">
-      <ion-item class="custom-item" *ngFor="let transaccion of listaTransacciones">
-        <div class="item-icon-box" [ngClass]="transaccion.tipo === 'ingreso' ? 'income-icon' : 'expense-icon'" slot="start">
-          <ion-icon [name]="transaccion.tipo === 'ingreso' ? 'arrow-up-circle-outline' : 'fast-food-outline'"></ion-icon>
-        </div>
+    <ion-list *ngIf="listaTransacciones.length > 0; else sinDatos">
+      <ion-item *ngFor="let item of listaTransacciones">
+        <ion-icon 
+          slot="start" 
+          [name]="item.tipo === 'ingreso' ? 'arrow-up-circle' : 'arrow-down-circle'" 
+          [color]="item.tipo === 'ingreso' ? 'success' : 'danger'">
+        </ion-icon>
+        
         <ion-label>
-          <h3>{{ transaccion.descripcion }}</h3>
-          <p>{{ transaccion.fecha | date:'dd/MM/yyyy' }}</p>
+          <h2>{{ item.descripcion || 'Sin descripción' }}</h2>
+          <p>{{ item.fecha | date:'dd/MM/yyyy, h:mm a' }}</p>
         </ion-label>
-        <slot slot="end">
-          <span class="amount" [ngClass]="transaccion.tipo === 'ingreso' ? 'income-text' : 'expense-text'">
-            {{ transaccion.tipo === 'ingreso' ? '+' : '-' }}${{ transaccion.monto }}
-          </span>
-        </slot>
+        
+        <ion-note slot="end" [color]="item.tipo === 'ingreso' ? 'success' : 'dark'" style="font-weight: bold; font-size: 1rem;">
+          {{ item.tipo === 'ingreso' ? '+' : '-' }}{{ item.monto | currency:'USD':'symbol':'1.0-2' }}
+        </ion-note>
       </ion-item>
     </ion-list>
 
-  </div>
+    <ng-template #sinDatos>
+      <div class="ion-text-center ion-padding" style="color: var(--ion-color-step-400);">
+        <p>No hay transacciones registradas aún.</p>
+      </div>
+    </ng-template>
+  </ng-container>
 
-  <ion-modal [isOpen]="mostrarModal" (didDismiss)="cerrarModal()" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.75]">
+  <ion-modal [isOpen]="mostrarModal" (didDismiss)="cerrarModal()">
     <ng-template>
-      <ion-header class="ion-no-border">
-        <ion-toolbar>
-          <ion-title>Nueva Transacción</ion-title>
+      <ion-header>
+        <ion-toolbar [color]="nuevaTransaccion.tipo === 'ingreso' ? 'success' : 'danger'">
+          <ion-title>Añadir {{ nuevaTransaccion.tipo === 'ingreso' ? 'Ingreso' : 'Gasto' }}</ion-title>
           <ion-buttons slot="end">
-            <ion-button color="medium" (click)="cerrarModal()">Cancelar</ion-button>
+            <ion-button (click)="cerrarModal()">Cerrar</ion-button>
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
-      
+
       <ion-content class="ion-padding">
-        <div style="display: flex; flex-direction: column; gap: 15px;">
-          
-          <ion-item lines="none" style="--background: var(--ion-color-light); border-radius: 12px;">
-            <ion-select label="Tipo" justify="space-between" [(ngModel)]="nuevaTransaccion.tipo">
-              <ion-select-option value="ingreso">🟢 Ingreso</ion-select-option>
-              <ion-select-option value="gasto">🔴 Gasto</ion-select-option>
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked">Monto ($)</ion-label>
+            <ion-input 
+              type="number" 
+              placeholder="0.00" 
+              [(ngModel)]="nuevaTransaccion.monto" 
+              required>
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Descripción</ion-label>
+            <ion-input 
+              type="text" 
+              placeholder="Ej. Almuerzo, Salario, etc." 
+              [(ngModel)]="nuevaTransaccion.descripcion">
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Tipo</ion-label>
+            <ion-select [(ngModel)]="nuevaTransaccion.tipo">
+              <ion-select-option value="ingreso">Ingreso</ion-select-option>
+              <ion-select-option value="gasto">Gasto</ion-select-option>
             </ion-select>
           </ion-item>
+        </ion-list>
 
-          <ion-item lines="none" style="--background: var(--ion-color-light); border-radius: 12px;">
-            <ion-input label="Monto ($)" type="number" placeholder="0.00" justify="space-between" [(ngModel)]="nuevaTransaccion.monto"></ion-input>
-          </ion-item>
-
-          <ion-item lines="none" style="--background: var(--ion-color-light); border-radius: 12px;">
-            <ion-input label="Descripción" type="text" placeholder="Ej: Pago de Hosting" justify="space-between" [(ngModel)]="nuevaTransaccion.descripcion"></ion-input>
-          </ion-item>
-
-          <ion-button expand="block" shape="round" style="margin-top: 15px; font-weight: bold;" (click)="guardarTransaccion()">
+        <div class="ion-padding-top">
+          <ion-button 
+            expand="block" 
+            [color]="nuevaTransaccion.tipo === 'ingreso' ? 'success' : 'danger'"
+            [disabled]="!nuevaTransaccion.monto || nuevaTransaccion.monto <= 0"
+            (click)="guardarTransaccion()">
+            <ion-spinner slot="start" name="cils" *ngIf="cargando"></ion-spinner>
             Guardar Registro
           </ion-button>
         </div>
       </ion-content>
     </ng-template>
   </ion-modal>
-
 </ion-content>

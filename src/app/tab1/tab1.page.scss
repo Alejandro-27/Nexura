@@ -181,3 +181,20 @@ ion-toolbar {
 }
 .expense-text { color: var(--ion-color-danger); }
 .income-text { color: var(--ion-color-success); }
+
+.positivo {
+  color: var(--ion-color-success, #2dd36f) !important;
+}
+
+.negativo {
+  color: var(--ion-color-danger, #eb445a) !important;
+}
+
+.balance-card {
+  margin-top: 16px;
+  h1 {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin: 8px 0 0 0;
+  }
+}

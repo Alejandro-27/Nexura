@@ -21,6 +21,13 @@ import {
   IonSelect,
   IonSelectOption,
 } from "@ionic/angular/standalone";
+import { addIcons } from "ionicons";
+import {
+  addCircleOutline,
+  removeCircleOutline,
+  arrowUpCircle,
+  arrowDownCircle,
+} from "ionicons/icons";
 import { AuthService } from "../services/auth";
 import { TransaccionesService } from "../services/transacciones";
 
@@ -61,6 +68,15 @@ interface TransaccionForm {
   ],
 })
 export class Tab1Page implements OnInit {
+  constructor() {
+    addIcons({
+      addCircleOutline,
+      removeCircleOutline,
+      arrowUpCircle,
+      arrowDownCircle,
+    });
+  }
+
   private authService = inject(AuthService);
   private transaccionesService = inject(TransaccionesService);
 
@@ -96,7 +112,8 @@ export class Tab1Page implements OnInit {
   async cargarDatos() {
     try {
       this.cargando = true;
-      this.listaTransacciones = await this.transaccionesService.getTransacciones();
+      this.listaTransacciones =
+        await this.transaccionesService.getTransacciones();
       this.calcularTotales();
     } catch (error) {
       console.error("Error al cargar los datos:", error);
