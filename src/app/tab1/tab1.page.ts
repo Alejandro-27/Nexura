@@ -4,6 +4,8 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { trashOutline } from "ionicons/icons";
 import { addIcons } from "ionicons";
+import { AuthService } from "../services/auth";
+import { TransaccionesService } from "../services/transacciones";
 import {
   IonHeader,
   IonToolbar,
@@ -29,13 +31,15 @@ import {
   IonSelectOption,
 } from "@ionic/angular/standalone";
 import {
-  addCircleOutline,
-  removeCircleOutline,
+  pieChart,
+  swapHorizontal,
+  settingsOutline,
   arrowUpCircle,
   arrowDownCircle,
+  addCircleOutline,
+  removeCircleOutline,
+  //  trashOutline,
 } from "ionicons/icons";
-import { AuthService } from "../services/auth";
-import { TransaccionesService } from "../services/transacciones";
 
 interface TransaccionForm {
   monto: number | null;
@@ -102,6 +106,9 @@ export class Tab1Page implements OnInit, OnDestroy {
 
   constructor() {
     addIcons({
+      "pie-chart": pieChart,
+      "swap-horizontal": swapHorizontal,
+      "settings-outline": settingsOutline,
       "arrow-up-circle": arrowUpCircle,
       "arrow-down-circle": arrowDownCircle,
       "add-circle-outline": addCircleOutline,

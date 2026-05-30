@@ -41,3 +41,7 @@ ion-button {
     transform: scale(0.98); // Efecto sutil de presión al pulsar
   }
 }
+
+ion-content {
+  --padding-bottom: 90px; 
+}

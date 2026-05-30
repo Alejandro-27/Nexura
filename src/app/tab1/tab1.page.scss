@@ -201,3 +201,7 @@ ion-toolbar {
 
 .text-success { color: var(--ion-color-success) !important; }
 .text-danger { color: var(--ion-color-danger) !important; }
+
+ion-content {
+  --padding-bottom: 90px; 
+}
