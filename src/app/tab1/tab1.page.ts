@@ -2,7 +2,7 @@ import { Component, OnInit, inject, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { trashOutline } from 'ionicons/icons';
+import { trashOutline } from "ionicons/icons";
 import { addIcons } from "ionicons";
 import {
   IonHeader,
@@ -19,9 +19,9 @@ import {
   IonItem,
   IonNote,
   IonSpinner,
-  IonItemSliding, 
+  IonItemSliding,
   IonItemOptions,
-  IonItemOption, 
+  IonItemOption,
   IonListHeader,
   IonModal,
   IonInput,
@@ -48,8 +48,8 @@ interface TransaccionForm {
 
 @Component({
   selector: "app-tab1",
-  templateUrl: "tab1.page.html",
-  styleUrls: ["tab1.page.scss"],
+  templateUrl: "./tab1.page.html",
+  styleUrls: ["./tab1.page.scss"],
   standalone: true,
   imports: [
     CommonModule,
@@ -68,9 +68,9 @@ interface TransaccionForm {
     IonItem,
     IonNote,
     IonSpinner,
-    IonItemSliding, 
-    IonItemOptions, 
-    IonItemOption,  
+    IonItemSliding,
+    IonItemOptions,
+    IonItemOption,
     IonListHeader,
     IonModal,
     IonInput,
@@ -102,11 +102,11 @@ export class Tab1Page implements OnInit, OnDestroy {
 
   constructor() {
     addIcons({
-      addCircleOutline,
-      removeCircleOutline,
-      arrowUpCircle,
-      arrowDownCircle,
-      'trash-outline': trashOutline,
+      "arrow-up-circle": arrowUpCircle,
+      "arrow-down-circle": arrowDownCircle,
+      "add-circle-outline": addCircleOutline,
+      "remove-circle-outline": removeCircleOutline,
+      "trash-outline": trashOutline,
     });
   }
 
