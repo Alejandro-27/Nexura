@@ -9,29 +9,15 @@ export class TransaccionesService {
   private authService = inject(AuthService);
   private supabase: SupabaseClient = this.authService.supabase;
 
-  // ID global de contingencia para desarrollo local
   private readonly ID_DESARROLLO = "00000000-0000-0000-0000-000000000000";
 
   constructor() {}
 
   async crearTransaccion(transaccion: any) {
-    // Buscamos un ID (del payload, del servicio o de la sesión)
     let userId = transaccion.usuario_id || this.authService.usuarioActual?.id;
+    if (!userId) userId = this.ID_DESARROLLO;
 
-    if (!userId) {
-      const session = await this.authService.getSesionActual();
-      userId = session?.user?.id;
-    }
-
-    // Si sigue siendo null, asignamos el ID fallback de desarrollo
-    if (!userId) {
-      userId = this.ID_DESARROLLO;
-    }
-
-    const payload = {
-      ...transaccion,
-      usuario_id: userId,
-    };
+    const payload = { ...transaccion, usuario_id: userId };
 
     const { data, error } = await this.supabase
       .from("transacciones")
@@ -43,17 +29,7 @@ export class TransaccionesService {
   }
 
   async getTransacciones() {
-    let userId = this.authService.usuarioActual?.id;
-
-    if (!userId) {
-      const session = await this.authService.getSesionActual();
-      userId = session?.user?.id;
-    }
-
-    // Si no hay sesión, buscamos las transacciones asociadas al ID de pruebas
-    if (!userId) {
-      userId = this.ID_DESARROLLO;
-    }
+    let userId = this.authService.usuarioActual?.id || this.ID_DESARROLLO;
 
     const { data, error } = await this.supabase
       .from("transacciones")
@@ -63,11 +39,23 @@ export class TransaccionesService {
         monto,
         tipo,
         descripcion,
+        categoria,
         fecha
       `,
       )
       .eq("usuario_id", userId)
       .order("fecha", { ascending: false });
+
+    if (error) throw error;
+    return data;
+  }
+
+  // Método para borrar de la base de datos
+  async eliminarTransaccion(id: string) {
+    const { data, error } = await this.supabase
+      .from("transacciones")
+      .delete()
+      .eq("id", id);
 
     if (error) throw error;
     return data;

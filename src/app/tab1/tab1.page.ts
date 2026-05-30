@@ -2,6 +2,8 @@ import { Component, OnInit, inject, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { trashOutline } from 'ionicons/icons';
+import { addIcons } from "ionicons";
 import {
   IonHeader,
   IonToolbar,
@@ -17,12 +19,15 @@ import {
   IonItem,
   IonNote,
   IonSpinner,
+  IonItemSliding, 
+  IonItemOptions,
+  IonItemOption, 
+  IonListHeader,
   IonModal,
   IonInput,
   IonSelect,
   IonSelectOption,
 } from "@ionic/angular/standalone";
-import { addIcons } from "ionicons";
 import {
   addCircleOutline,
   removeCircleOutline,
@@ -36,6 +41,7 @@ interface TransaccionForm {
   monto: number | null;
   tipo: "ingreso" | "gasto";
   descripcion: string;
+  categoria: string;
   fecha: Date;
   usuario_id: string | null;
 }
@@ -62,6 +68,10 @@ interface TransaccionForm {
     IonItem,
     IonNote,
     IonSpinner,
+    IonItemSliding, 
+    IonItemOptions, 
+    IonItemOption,  
+    IonListHeader,
     IonModal,
     IonInput,
     IonSelect,
@@ -71,7 +81,7 @@ interface TransaccionForm {
 export class Tab1Page implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private transaccionesService = inject(TransaccionesService);
-  private authSubscription!: Subscription; 
+  private authSubscription!: Subscription;
 
   public listaTransacciones: any[] = [];
   public cargando: boolean = true;
@@ -85,6 +95,7 @@ export class Tab1Page implements OnInit, OnDestroy {
     monto: null,
     tipo: "gasto",
     descripcion: "",
+    categoria: "General",
     fecha: new Date(),
     usuario_id: null,
   };
@@ -95,6 +106,7 @@ export class Tab1Page implements OnInit, OnDestroy {
       removeCircleOutline,
       arrowUpCircle,
       arrowDownCircle,
+      'trash-outline': trashOutline,
     });
   }
 
@@ -145,6 +157,7 @@ export class Tab1Page implements OnInit, OnDestroy {
       monto: null,
       tipo: tipo,
       descripcion: "",
+      categoria: tipo == "ingreso" ? "Sueldo" : "Comida",
       fecha: new Date(),
       usuario_id: this.idUsuarioActual, // Aquí ya estará cargado gracias al BehaviorSubject
     };
@@ -160,7 +173,6 @@ export class Tab1Page implements OnInit, OnDestroy {
       console.warn("El monto no es válido.");
       return;
     }
-
     // Intentamos obtener el ID real
     let idUsuarioSeguro =
       this.idUsuarioActual || this.authService.usuarioActual?.id;
@@ -184,6 +196,7 @@ export class Tab1Page implements OnInit, OnDestroy {
         monto: Number(this.nuevaTransaccion.monto),
         tipo: this.nuevaTransaccion.tipo,
         descripcion: this.nuevaTransaccion.descripcion.trim(),
+        categoria: this.nuevaTransaccion.categoria,
         usuario_id: idUsuarioSeguro,
         fecha: new Date().toISOString(),
       };
@@ -200,6 +213,18 @@ export class Tab1Page implements OnInit, OnDestroy {
       }, 60);
     } catch (error) {
       console.error("Error en el flujo de guardado:", error);
+      this.cargando = false;
+    }
+  }
+
+  async eliminarTransaccion(id: string) {
+    try {
+      this.cargando = true;
+      await this.transaccionesService.eliminarTransaccion(id);
+      await this.cargarDatos();
+    } catch (error) {
+      console.error("Error al eliminar la transacción", error);
+    } finally {
       this.cargando = false;
     }
   }
