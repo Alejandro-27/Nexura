@@ -60,4 +60,19 @@ export class TransaccionesService {
     if (error) throw error;
     return data;
   }
+
+  async getReporteGastosPorCategoria() {
+    try {
+      // Consultar directamente la vista que en Supabase
+      const { data, error } = await this.supabase
+        .from('reporte_gastos_por_categoria')
+        .select('*');
+  
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error al obtener el reporte por categoría:', error);
+      throw error;
+    }
+  }
 }

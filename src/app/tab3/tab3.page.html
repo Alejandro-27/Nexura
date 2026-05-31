@@ -1,36 +1,45 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>Mi Perfil</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Ajustes</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <div class="ion-text-center ion-padding-vertical">
-    <ion-avatar style="margin: 0 auto; width: 90px; height: 90px;">
-      <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Avatar Nexura" />
-    </ion-avatar>
-    <h2 class="ion-margin-top" style="font-weight: 600;">Bienvenido a Nexura</h2>
-  </div>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ajustes</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-  <ion-card>
-    <ion-card-content class="ion-no-padding">
-      <ion-list lines="inset">
-        <ion-item>
-          <ion-icon slot="start" name="mail-outline" color="medium"></ion-icon>
-          <ion-label>
-            <p>Correo Electrónico</p>
-            <h2>{{ emailUsuario || 'Cargando...' }}</h2>
-          </ion-label>
-        </ion-item>
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+  <div class="ion-padding">
 
-  <div class="ion-padding-top">
-    <ion-button expand="block" color="danger" fill="clear" (click)="cerrarSesion()">
+    <ion-card color="light" style="margin: 0 0 20px 0;">
+      <ion-card-content class="ion-text-center ion-padding-vertical" style="display: flex; flex-direction: column; align-items: center;">
+        
+        <ion-avatar style="width: 80px; height: 80px; background-color: var(--ion-color-step-200); display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+          <ion-icon name="person-outline" style="font-size: 2.5rem; color: var(--ion-color-dark);"></ion-icon>
+        </ion-avatar>
+
+        <h2 style="font-weight: bold; margin: 5px 0 0 0; font-size: 1.15rem;">{{ emailUsuario }}</h2>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-list lines="inset" style="border-radius: 8px; overflow: hidden; margin-bottom: 25px;">
+      
+      <ion-item>
+        <ion-icon slot="start" name="mail-outline" color="medium"></ion-icon>
+        <ion-label>
+          <h2>Cuenta vinculada</h2>
+          <p>{{ emailUsuario }}</p>
+        </ion-label>
+      </ion-item>
+
+    </ion-list>
+
+    <ion-button expand="block" color="danger" fill="outline" (click)="cerrarSesion()">
       <ion-icon slot="start" name="log-out-outline"></ion-icon>
-      Cerrar Sesión activa
+      Cerrar Sesión
     </ion-button>
+
   </div>
-  <div style="height: 50px; width: 100%"></div>
 </ion-content>
