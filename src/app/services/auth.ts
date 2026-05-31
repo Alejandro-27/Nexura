@@ -14,28 +14,30 @@ export class AuthService {
   public usuarioActual$ = this._usuarioActual.asObservable();
 
   constructor() {
-      this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey, {
-        auth: {
-          storage: globalThis.localStorage,
-          autoRefreshToken: true,
-          persistSession: true,
-
-          ...({
-            getLock: async () => {
-              return () => {};
-            }
-          } as any)
-        }
-      });
+        this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey, {
+          auth: {
+            storage: globalThis.localStorage,
+            autoRefreshToken: true,
+            persistSession: true,
+            lockType: 'custom',    
+            initializeLookup: false,
   
-      // Leer la sesión inmediatamente al arrancar el servicio
-      this.sincronizarSesionInicial();
-  
-      // Escuchar cambios de estado en tiempo real
-      this.supabase.auth.onAuthStateChange((event, session) => {
-        console.log('Cambio de estado Auth Supabase:', event);
-        this._usuarioActual.next(session?.user ?? null);
-      });
+            ...({
+              getLock: async () => {
+                return () => {};
+              }
+            } as any)
+          }
+        });
+    
+        // Leer la sesión inmediatamente al arrancar el servicio
+        this.sincronizarSesionInicial();
+    
+        // Escuchar cambios de estado en tiempo real
+        this.supabase.auth.onAuthStateChange((event, session) => {
+          console.log('Cambio de estado Auth Supabase:', event);
+          this._usuarioActual.next(session?.user ?? null);
+        });
   }
   
   private async sincronizarSesionInicial() {
@@ -64,6 +66,15 @@ export class AuthService {
       return null;
     }
   }
+
+  async registrar(email: string, password: string) {
+      const { data, error } = await this.supabase.auth.signUp({
+        email,
+        password
+      });
+      if (error) throw error;
+      return data;
+    }
 
   async iniciarSesion(email: string, password: string) {
     const { data, error } = await this.supabase.auth.signInWithPassword({

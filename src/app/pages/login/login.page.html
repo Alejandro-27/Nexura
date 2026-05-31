@@ -1,0 +1,58 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Nexura</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  <div style="display: flex; flex-direction: column; justify-content: center; height: 100%; max-width: 450px; margin: 0 auto;">
+    
+    <div class="ion-text-center" style="margin-bottom: 30px;">
+      <h1 style="font-weight: 800; font-size: 2.2rem; letter-spacing: -1px; margin: 0;">Bienvenido</h1>
+      <p style="margin: 5px 0 0 0; color: var(--ion-color-step-600);">Gestiona tus finanzas sin esfuerzo</p>
+    </div>
+
+    <ion-card color="light" style="margin: 0 0 20px 0; border-radius: 12px;">
+      <ion-card-content class="ion-padding">
+        
+        <ion-text color="danger" *ngIf="errorMensaje">
+          <p style="margin-top: 0; font-weight: 500; font-size: 0.9rem;">⚠️ {{ errorMensaje }}</p>
+        </ion-text>
+
+        <ion-item lines="relative" style="margin-bottom: 15px; --background: transparent;">
+          <ion-input 
+            label="Correo Electrónico" 
+            labelPlacement="floating" 
+            type="email" 
+            [(ngModel)]="email" 
+            placeholder="ejemplo@correo.com">
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="relative" style="margin-bottom: 20px; --background: transparent;">
+          <ion-input 
+            label="Contraseña" 
+            labelPlacement="floating" 
+            type="password" 
+            [(ngModel)]="contrasena" 
+            placeholder="••••••••">
+          </ion-input>
+        </ion-item>
+
+        <ion-button expand="block" color="primary" (click)="clickLogin()" [disabled]="cargando" style="margin-top: 10px; height: 45px; font-weight: bold;">
+          <span *ngIf="!cargando">Ingresar</span>
+          <ion-spinner name="crescent" *ngIf="cargando"></ion-spinner>
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
+    <div class="ion-text-center" style="margin-top: 10px;">
+      <ion-text color="medium" style="font-size: 0.95rem;">
+        ¿No tienes una cuenta? 
+        <a [routerLink]="['/register']" style="color: var(--ion-color-primary); font-weight: bold; text-decoration: none;">Regístrate</a>
+      </ion-text>
+    </div>
+
+  </div>
+</ion-content>
