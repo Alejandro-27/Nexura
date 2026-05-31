@@ -224,7 +224,7 @@ export class Tab1Page implements OnInit, OnDestroy {
     }
   }
 
-  async eliminarTransaccion(id: string) {
+  /*  async eliminarTransaccion(id: string) {
     try {
       this.cargando = true;
       await this.transaccionesService.eliminarTransaccion(id);
@@ -233,6 +233,18 @@ export class Tab1Page implements OnInit, OnDestroy {
       console.error("Error al eliminar la transacción", error);
     } finally {
       this.cargando = false;
+    }
+  }*/
+  async eliminarTransaccion(id: string) {
+    try {
+      this.listaTransacciones = this.listaTransacciones.filter(
+        (t) => t.id !== id,
+      );
+      this.calcularTotales();
+      await this.transaccionesService.eliminarTransaccion(id);
+    } catch (error) {
+      console.error("Error al eliminar la transacción", error);
+      await this.cargarDatos();
     }
   }
   private calcularTotales() {
