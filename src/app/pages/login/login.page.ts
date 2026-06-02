@@ -61,7 +61,7 @@ export class LoginPage {
       this.errorMensaje = "";
 
       // Llamada real a Supabase
-      await this.authService.iniciarSesion(this.email, this.contrasena);
+      await this.authService.iniciarSesion(this.email.trim(), this.contrasena.trim());
 
       // Login exitoso -> Redireccionamiento al Dashboard principal reemplazando la ruta
       this.router.navigate(["/tabs/tab1"], { replaceUrl: true });
