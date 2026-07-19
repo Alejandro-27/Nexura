@@ -18,7 +18,7 @@ Nexura es una aplicación móvil multiplataforma nativa diseñada con **Ionic Fr
 
 *   **Frontend:** Ionic Framework (Última versión) & Angular (Componentes Standalone)
 *   **Backend & Seguridad:** Supabase (PostgreSQL + Auth Server)
-*   **Gestor de Paquetes:** npm / Node.js
+*   **Gestor de Paquetes:** pnpm / Node.js
 *   **Estilos:** Sass (SCSS) / Componentes Web Nativos de Ionic
 
 ---
@@ -30,11 +30,11 @@ Antes de comenzar la instalación, asegúrate de tener configurado tu entorno gl
 *   **Node.js:** Versión LTS activa (v20 o superior recomendada).
 *   **Ionic CLI:** Instalado de forma global en tu máquina.
     ```bash
-    npm install -g @ionic/cli
+    pnpm install -g @ionic/cli
     ```
 *   **Angular CLI:** Instalado de forma global.
     ```bash
-    npm install -g @angular/cli
+    pnpm install -g @angular/cli
     ```
 
 ---
@@ -48,4 +48,4 @@ Abre tu terminal en tu directorio de proyectos y ejecuta:
 ```bash
 git clone [https://github.com/tu-usuario/nexura.git](https://github.com/tu-usuario/nexura.git)
 cd nexura
-npm install
+pnpm install
