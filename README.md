@@ -4,7 +4,7 @@ Nexura es una aplicación móvil multiplataforma nativa diseñada con **Ionic Fr
 
 ---
 
-## 🚀 Características Principales
+## Características Principales
 
 *   **Autenticación Multiusuario:** Registro, inicio de sesión y persistencia de sesión cifrada de forma nativa a través de Supabase Auth.
 *   **Aislamiento de Perfiles (Multi-tenant):** Filtro estricto a nivel de base de datos y consultas para que cada usuario gestione única y exclusivamente sus propios registros financieros.
@@ -14,7 +14,7 @@ Nexura es una aplicación móvil multiplataforma nativa diseñada con **Ionic Fr
 
 ---
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 
 *   **Frontend:** Ionic Framework (Última versión) & Angular (Componentes Standalone)
 *   **Backend & Seguridad:** Supabase (PostgreSQL + Auth Server)
@@ -23,7 +23,7 @@ Nexura es una aplicación móvil multiplataforma nativa diseñada con **Ionic Fr
 
 ---
 
-## ⚙️ Requisitos Previos
+## Requisitos Previos
 
 Antes de comenzar la instalación, asegúrate de tener configurado tu entorno global con las siguientes herramientas:
 
@@ -39,7 +39,7 @@ Antes de comenzar la instalación, asegúrate de tener configurado tu entorno gl
 
 ---
 
-## 📦 Instalación del Proyecto
+## Instalación del Proyecto
 
 Sigue estos pasos en orden secuencial para clonar, instalar y levantar el entorno local de desarrollo:
 
